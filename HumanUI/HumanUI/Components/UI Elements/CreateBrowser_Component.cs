@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
+using CefSharp;
+using CefSharp.Wpf; 
 
 namespace HumanUI.Components.UI_Elements
 {
@@ -54,6 +56,11 @@ namespace HumanUI.Components.UI_Elements
             int height = -1;
             if (!DA.GetData<string>("URL", ref url)) return;
 
+            //using cefsharp broswer 
+            //ChromiumWebBrowser cwb = new ChromiumWebBrowser(url); 
+            CefSharp.Wpf.ChromiumWebBrowser cwb = new CefSharp.Wpf.ChromiumWebBrowser(); 
+
+
             //initiate the WebBrowser object
             WebBrowser wb = new WebBrowser();
             //point it to a URL
@@ -61,15 +68,15 @@ namespace HumanUI.Components.UI_Elements
 
             //optionally set its dimensions
             if(DA.GetData<int>("Width",ref width)){
-                wb.Width = width;   
+                cwb.Width = width;
             }
             if (DA.GetData<int>("Height", ref height))
             {
-                wb.Height = height;
+                cwb.Height = height;
             }
 
             //pass out the browser object
-            DA.SetData("Browser", new UIElement_Goo(wb, String.Format("Browser: {0}", url), InstanceGuid, DA.Iteration));
+            DA.SetData("Browser", new UIElement_Goo(cwb, String.Format("Browser: {0}", url), InstanceGuid, DA.Iteration));
         }
 
         /// <summary>
@@ -85,3 +92,4 @@ namespace HumanUI.Components.UI_Elements
         public override GH_Exposure Exposure => GH_Exposure.secondary;
     }
 }
+
